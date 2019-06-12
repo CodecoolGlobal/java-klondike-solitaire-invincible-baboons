@@ -192,13 +192,16 @@ public class Game extends Pane {
                     pile.addCard(cardBeingPlaced);
                     addMouseEventHandlers(cardBeingPlaced);
                     cardBeingPlaced.setContainingPile(pile);
-                    getChildren().add(cardBeingPlaced);
+                    if(j == i){
+                        cardBeingPlaced.flip();
+                    }getChildren().add(cardBeingPlaced);
                 }
             }else{
                 Card cardBeingPlaced = deckIterator.next();
                 pile.addCard(cardBeingPlaced);
                 addMouseEventHandlers(cardBeingPlaced);
                 cardBeingPlaced.setContainingPile(pile);
+                cardBeingPlaced.flip();
                 getChildren().add(cardBeingPlaced);
             }
         }
