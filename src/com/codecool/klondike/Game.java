@@ -19,10 +19,12 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 public class Game extends Pane {
 
     private List<Card> deck = new ArrayList<>();
+
 
     private Pile stockPile;
     private Pile discardPile;
@@ -166,6 +168,13 @@ public class Game extends Pane {
         //creating and positioning the restart button
         restartButton.setLayoutX(20);
         restartButton.setLayoutY(20);
+        restartButton.setOnAction((event) -> {
+            getChildren().clear();
+            deck = Card.createNewDeck();
+            initPiles();
+            dealCards();
+
+        });
         getChildren().add(restartButton);
 
 
