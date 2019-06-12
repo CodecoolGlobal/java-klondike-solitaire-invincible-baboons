@@ -13,9 +13,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Game extends Pane {
 
@@ -95,6 +93,7 @@ public class Game extends Pane {
     public Game() {
         deck = Card.createNewDeck();
         initPiles();
+        Collections.shuffle(deck);
         dealCards();
     }
 
@@ -114,6 +113,7 @@ public class Game extends Pane {
         //TODO
         return true;
     }
+
 
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
