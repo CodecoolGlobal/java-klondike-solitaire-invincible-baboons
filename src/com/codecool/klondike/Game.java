@@ -13,9 +13,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Game extends Pane {
 
@@ -100,6 +98,7 @@ public class Game extends Pane {
     public Game() {
         deck = Card.createNewDeck();
         initPiles();
+        Collections.shuffle(deck);
         dealCards();
     }
 
@@ -140,7 +139,6 @@ public class Game extends Pane {
         }
         return false;
     }
-
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -209,7 +207,27 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        //TODO
+        for(int i = 0; i < tableauPiles.size(); i++){
+            Pile pile = tableauPiles.get(i);
+            if(i>0){
+                for(int j = 0; j < i+1; j++ ){
+                    Card cardBeingPlaced = deckIterator.next();
+                    pile.addCard(cardBeingPlaced);
+                    addMouseEventHandlers(cardBeingPlaced);
+                    cardBeingPlaced.setContainingPile(pile);
+                    if(j == i){
+                        cardBeingPlaced.flip();
+                    }getChildren().add(cardBeingPlaced);
+                }
+            }else{
+                Card cardBeingPlaced = deckIterator.next();
+                pile.addCard(cardBeingPlaced);
+                addMouseEventHandlers(cardBeingPlaced);
+                cardBeingPlaced.setContainingPile(pile);
+                cardBeingPlaced.flip();
+                getChildren().add(cardBeingPlaced);
+            }
+        }
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);
             addMouseEventHandlers(card);
@@ -224,4 +242,10 @@ public class Game extends Pane {
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 
+    /**
+     *
+     */
+    public void restartGame() {
+
+    }
 }
