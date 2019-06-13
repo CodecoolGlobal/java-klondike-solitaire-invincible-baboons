@@ -91,7 +91,7 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        //TODO
+        if(foundationPiles.contains())
         return false;
     }
 
@@ -110,7 +110,7 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        while (!discardPile.isEmpty()){
+        while (!discardPile.isEmpty()) {
             Card temp = discardPile.getTopCard();
             temp.flip();
             temp.moveToPile(stockPile);
@@ -119,7 +119,6 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        //TODO
         if (destPile.isEmpty() && destPile.getPileType().equals(Pile.PileType.TABLEAU))
             if (card.getRank().equals(Rank.KING)) {
                 return true;
@@ -143,6 +142,7 @@ public class Game extends Pane {
         }
         return false;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -211,19 +211,20 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        for(int i = 0; i < tableauPiles.size(); i++){
+        for (int i = 0; i < tableauPiles.size(); i++) {
             Pile pile = tableauPiles.get(i);
-            if(i>0){
-                for(int j = 0; j < i+1; j++ ){
+            if (i > 0) {
+                for (int j = 0; j < i + 1; j++) {
                     Card cardBeingPlaced = deckIterator.next();
                     pile.addCard(cardBeingPlaced);
                     addMouseEventHandlers(cardBeingPlaced);
                     cardBeingPlaced.setContainingPile(pile);
-                    if(j == i){
+                    if (j == i) {
                         cardBeingPlaced.flip();
-                    }getChildren().add(cardBeingPlaced);
+                    }
+                    getChildren().add(cardBeingPlaced);
                 }
-            }else{
+            } else {
                 Card cardBeingPlaced = deckIterator.next();
                 pile.addCard(cardBeingPlaced);
                 addMouseEventHandlers(cardBeingPlaced);
@@ -244,12 +245,5 @@ public class Game extends Pane {
         setBackground(new Background(new BackgroundImage(tableBackground,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-    }
-
-    /**
-     *
-     */
-    public void restartGame() {
-
     }
 }
