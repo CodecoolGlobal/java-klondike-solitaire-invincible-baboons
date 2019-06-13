@@ -55,34 +55,36 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
-        Pile activePile = card.getContainingPile();
-        ObservableList<Card> draggedPile = card.getContainingPile().getCards();
+        if (!card.isFaceDown()) {
+            Pile activePile = card.getContainingPile();
+            ObservableList<Card> draggedPile = card.getContainingPile().getCards();
 
-        if (activePile.getPileType() == Pile.PileType.STOCK)
-            return;
-        double offsetX = e.getSceneX() - dragStartX;
-        double offsetY = e.getSceneY() - dragStartY;
+            if (activePile.getPileType() == Pile.PileType.STOCK)
+                return;
+            double offsetX = e.getSceneX() - dragStartX;
+            double offsetY = e.getSceneY() - dragStartY;
 
-        draggedCards.clear();
-        draggedCards.add(card);
-        try {
-            for (int i = draggedPile.indexOf(card) + 1; i < draggedPile.size(); i++) {
-                draggedCards.add(activePile.getCards().get(i));
+            draggedCards.clear();
+            draggedCards.add(card);
 
+            try {
+                for (int i = draggedPile.indexOf(card) + 1; i < draggedPile.size(); i++) {
+                    draggedCards.add(activePile.getCards().get(i));
+
+                }
+            } catch (IndexOutOfBoundsException ex) {
+                System.out.println("Out of index");
             }
-        } catch (IndexOutOfBoundsException ex) {
-            System.out.println("Out of index");
-        }
 
-        for (Card draggedCard : draggedCards){
+            for (Card draggedCard : draggedCards) {
+                draggedCard.getDropShadow().setRadius(20);
+                draggedCard.getDropShadow().setOffsetX(10);
+                draggedCard.getDropShadow().setOffsetY(10);
 
-        draggedCard.getDropShadow().setRadius(20);
-        draggedCard.getDropShadow().setOffsetX(10);
-        draggedCard.getDropShadow().setOffsetY(10);
-
-        draggedCard.toFront();
-        draggedCard.setTranslateX(offsetX);
-        draggedCard.setTranslateY(offsetY);
+                draggedCard.toFront();
+                draggedCard.setTranslateX(offsetX);
+                draggedCard.setTranslateY(offsetY);
+            }
         }
 
     };
