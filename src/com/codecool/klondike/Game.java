@@ -91,7 +91,7 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        if(foundationPiles.contains())
+        //if(foundationPiles.contains())
         return false;
     }
 
