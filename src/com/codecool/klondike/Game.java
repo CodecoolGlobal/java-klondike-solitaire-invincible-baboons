@@ -28,6 +28,7 @@ public class Game extends Pane {
     private double dragStartX, dragStartY;
     private List<Card> draggedCards = FXCollections.observableArrayList();
 
+    //Initializing restart button
     Button restartButton = new Button("restart");
 
     private static final double STOCK_GAP = 1;
@@ -95,7 +96,7 @@ public class Game extends Pane {
     };
 
 
-    //creating and positioning the restart button
+    //Restart buttons's event handler
     private EventHandler<MouseEvent> restartGame = e -> {
         getChildren().clear();
         tableauPiles.clear();
@@ -103,6 +104,7 @@ public class Game extends Pane {
         initPiles();
         Collections.shuffle(deck);
         dealCards();
+        System.out.println("You've restarted the game!");
     };
 
     public boolean isGameWon() {
