@@ -82,11 +82,13 @@ public class Game extends Pane {
         Pile pileFoundation = getValidIntersectingPile(card, foundationPiles);
         //TODO
         if (pile != null) {
-            if (isMoveValid(card, pile))
-                handleValidMove(card, pile);
+            isMoveValid(card, pile);
+            handleValidMove(card, pile);
+            autoFlip(tableauPiles);
         } else if (pileFoundation != null) {
-            if (isMoveValid(card, pileFoundation))
-                handleValidMove(card, pileFoundation);
+            isMoveValid(card, pileFoundation);
+            handleValidMove(card, pileFoundation);
+            autoFlip(tableauPiles);
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
@@ -106,7 +108,10 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        //TODO
+        if(stockPile.isEmpty() ||
+            discardPile.isEmpty() ||
+            tableauPiles.isEmpty()){
+            return true; }
         return false;
     }
 
@@ -134,7 +139,6 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        //TODO
         if (destPile.isEmpty() && destPile.getPileType().equals(Pile.PileType.TABLEAU))
             if (card.getRank().equals(Rank.KING)) {
                 return true;
@@ -158,6 +162,7 @@ public class Game extends Pane {
         }
         return false;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -269,5 +274,21 @@ public class Game extends Pane {
         setBackground(new Background(new BackgroundImage(tableBackground,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
+
+    private void autoFlip(List<Pile> piles) {
+        for (Pile pile : piles) {
+            Card topCard = pile.getTopCard();
+            if (topCard != null && topCard.isFaceDown()) {
+                topCard.flip();
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public void restartGame() {
+
     }
 }
