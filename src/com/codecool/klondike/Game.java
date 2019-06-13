@@ -1,17 +1,15 @@
 package com.codecool.klondike;
 
+import com.sun.javafx.scene.control.LabeledText;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 
 import java.util.*;
 
@@ -45,6 +43,8 @@ public class Game extends Pane {
         }
     };
 
+
+
     private EventHandler<MouseEvent> stockReverseCardsHandler = e -> {
         refillStockFromDiscard();
     };
@@ -56,23 +56,38 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
-        Pile activePile = card.getContainingPile();
-        if (activePile.getPileType() == Pile.PileType.STOCK)
-            return;
-        double offsetX = e.getSceneX() - dragStartX;
-        double offsetY = e.getSceneY() - dragStartY;
+        if (!card.isFaceDown()) {
+            Pile activePile = card.getContainingPile();
+            ObservableList<Card> draggedPile = card.getContainingPile().getCards();
 
-        draggedCards.clear();
-        draggedCards.add(card);
-        System.out.println(draggedCards.indexOf(card));
+            if (activePile.getPileType() == Pile.PileType.STOCK)
+                return;
+            double offsetX = e.getSceneX() - dragStartX;
+            double offsetY = e.getSceneY() - dragStartY;
 
-        card.getDropShadow().setRadius(20);
-        card.getDropShadow().setOffsetX(10);
-        card.getDropShadow().setOffsetY(10);
+            draggedCards.clear();
+            draggedCards.add(card);
 
-        card.toFront();
-        card.setTranslateX(offsetX);
-        card.setTranslateY(offsetY);
+            try {
+                for (int i = draggedPile.indexOf(card) + 1; i < draggedPile.size(); i++) {
+                    draggedCards.add(activePile.getCards().get(i));
+
+                }
+            } catch (IndexOutOfBoundsException ex) {
+                System.out.println("Out of index");
+            }
+
+            for (Card draggedCard : draggedCards) {
+                draggedCard.getDropShadow().setRadius(20);
+                draggedCard.getDropShadow().setOffsetX(10);
+                draggedCard.getDropShadow().setOffsetY(10);
+
+                draggedCard.toFront();
+                draggedCard.setTranslateX(offsetX);
+                draggedCard.setTranslateY(offsetY);
+            }
+        }
+
     };
 
     private EventHandler<MouseEvent> onMouseReleasedHandler = e -> {
@@ -143,7 +158,9 @@ public class Game extends Pane {
         System.out.println("Stock refilled from discard pile.");
     }
 
+
     public boolean isMoveValid(Card card, Pile destPile) {
+        //TODO
         if (destPile.isEmpty() && destPile.getPileType().equals(Pile.PileType.TABLEAU))
             if (card.getRank().equals(Rank.KING)) {
                 return true;
