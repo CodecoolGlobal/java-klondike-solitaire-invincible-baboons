@@ -93,7 +93,10 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        //TODO
+        if(stockPile.isEmpty() ||
+            discardPile.isEmpty() ||
+            tableauPiles.isEmpty()){
+            return true; }
         return false;
     }
 
@@ -112,12 +115,15 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        //TODO
+        while (!discardPile.isEmpty()) {
+            Card temp = discardPile.getTopCard();
+            temp.flip();
+            temp.moveToPile(stockPile);
+        }
         System.out.println("Stock refilled from discard pile.");
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        //TODO
         if (destPile.isEmpty() && destPile.getPileType().equals(Pile.PileType.TABLEAU))
             if (card.getRank().equals(Rank.KING)) {
                 return true;

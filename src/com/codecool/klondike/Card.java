@@ -62,6 +62,9 @@ public class Card extends ImageView {
         return containingPile;
     }
 
+    public String getColour(){
+        return suit.getColor();
+    }
     public void setContainingPile(Pile containingPile) {
         this.containingPile = containingPile;
     }
