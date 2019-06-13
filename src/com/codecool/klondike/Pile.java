@@ -61,7 +61,7 @@ public class Pile extends Pane {
     }
 
     public void clear() {
-        this.cards.clear();
+        cards.clear();
     }
 
     public void addCard(Card card) {

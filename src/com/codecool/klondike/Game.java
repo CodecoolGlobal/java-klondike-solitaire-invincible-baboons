@@ -3,7 +3,7 @@ package com.codecool.klondike;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -27,9 +27,12 @@ public class Game extends Pane {
     private double dragStartX, dragStartY;
     private List<Card> draggedCards = FXCollections.observableArrayList();
 
-    private static double STOCK_GAP = 1;
-    private static double FOUNDATION_GAP = 0;
-    private static double TABLEAU_GAP = 30;
+    //Initializing restart button
+    Button restartButton = new Button("restart");
+
+    private static final double STOCK_GAP = 1;
+    private static final double FOUNDATION_GAP = 0;
+    private static final double TABLEAU_GAP = 30;
 
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
@@ -90,8 +93,20 @@ public class Game extends Pane {
         }
     };
 
+
+    //Restart buttons's event handler
+    private EventHandler<MouseEvent> restartGame = e -> {
+        getChildren().clear();
+        tableauPiles.clear();
+        deck = Card.createNewDeck();
+        initPiles();
+        Collections.shuffle(deck);
+        dealCards();
+        System.out.println("You've restarted the game!");
+    };
+
     public boolean isGameWon() {
-        //if(foundationPiles.contains())
+        //TODO
         return false;
     }
 
@@ -119,6 +134,7 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
+        //TODO
         if (destPile.isEmpty() && destPile.getPileType().equals(Pile.PileType.TABLEAU))
             if (card.getRank().equals(Rank.KING)) {
                 return true;
@@ -142,7 +158,6 @@ public class Game extends Pane {
         }
         return false;
     }
-
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -184,6 +199,15 @@ public class Game extends Pane {
         stockPile.setLayoutY(20);
         stockPile.setOnMouseClicked(stockReverseCardsHandler);
         getChildren().add(stockPile);
+
+
+        //Positioning restart button
+        restartButton.setLayoutX(20);
+        restartButton.setLayoutY(20);
+        getChildren().add(restartButton);
+        restartButton.setOnMouseClicked(restartGame);
+
+
 
         discardPile = new Pile(Pile.PileType.DISCARD, "Discard", STOCK_GAP);
         discardPile.setBlurredBackground();

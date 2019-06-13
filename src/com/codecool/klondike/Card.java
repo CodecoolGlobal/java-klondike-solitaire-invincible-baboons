@@ -31,7 +31,6 @@ public class Card extends ImageView {
         this.faceDown = faceDown;
         this.dropShadow = new DropShadow(2, Color.gray(0, 0.75));
         String a = getShortName();
-        System.out.println(a);
         backFace = cardBackImage;
         frontFace = cardFaceImages.get(getShortName());
         setImage(faceDown ? backFace : frontFace);
@@ -85,7 +84,7 @@ public class Card extends ImageView {
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        if(!card1.getColour().equals(card2.getColour())){
+        if(!card1.suit.getColor().equals(card2.suit.getColor())){
             return true;
         }return false;
     }
