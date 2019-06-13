@@ -39,11 +39,23 @@ public class MouseUtil {
         double targetY;
 
         if (destPile.isEmpty()) {
-            targetX = destPile.getLayoutX();
-            targetY = destPile.getLayoutY();
+            if (destPile.getPileType() == Pile.PileType.TABLEAU) {
+                targetX = destPile.getLayoutX();
+                targetY = destPile.getLayoutY();
+                destCardGap = 0;
+            } else {
+                targetX = destPile.getLayoutX();
+                targetY = destPile.getLayoutY();
+            }
         } else {
-            targetX = destPile.getTopCard().getLayoutX();
-            targetY = destPile.getTopCard().getLayoutY();
+            if (destPile.getPileType() == Pile.PileType.TABLEAU) {
+                targetX = destPile.getTopCard().getLayoutX();
+                targetY = destPile.getTopCard().getLayoutY();
+                destCardGap = 30;
+            } else {
+                targetX = destPile.getTopCard().getLayoutX();
+                targetY = destPile.getTopCard().getLayoutY();
+            }
         }
 
         for (int i = 0; i < cardsToSlide.size(); i++) {
