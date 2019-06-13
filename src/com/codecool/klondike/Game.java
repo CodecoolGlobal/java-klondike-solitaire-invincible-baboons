@@ -3,6 +3,7 @@ package com.codecool.klondike;
 import com.sun.javafx.scene.control.LabeledText;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -55,6 +56,8 @@ public class Game extends Pane {
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
         Pile activePile = card.getContainingPile();
+        ObservableList<Card> draggedPile = card.getContainingPile().getCards();
+
         if (activePile.getPileType() == Pile.PileType.STOCK)
             return;
         double offsetX = e.getSceneX() - dragStartX;
@@ -62,15 +65,26 @@ public class Game extends Pane {
 
         draggedCards.clear();
         draggedCards.add(card);
-        System.out.println(draggedCards.indexOf(card));
+        try {
+            for (int i = draggedPile.indexOf(card) + 1; i < draggedPile.size(); i++) {
+                draggedCards.add(activePile.getCards().get(i));
 
-        card.getDropShadow().setRadius(20);
-        card.getDropShadow().setOffsetX(10);
-        card.getDropShadow().setOffsetY(10);
+            }
+        } catch (IndexOutOfBoundsException ex) {
+            System.out.println("Out of index");
+        }
 
-        card.toFront();
-        card.setTranslateX(offsetX);
-        card.setTranslateY(offsetY);
+        for (Card draggedCard : draggedCards){
+
+        draggedCard.getDropShadow().setRadius(20);
+        draggedCard.getDropShadow().setOffsetX(10);
+        draggedCard.getDropShadow().setOffsetY(10);
+
+        draggedCard.toFront();
+        draggedCard.setTranslateX(offsetX);
+        draggedCard.setTranslateY(offsetY);
+        }
+
     };
 
     private EventHandler<MouseEvent> onMouseReleasedHandler = e -> {
@@ -217,22 +231,14 @@ public class Game extends Pane {
 
 
 
-
-
-
-
-        //Setting up the double click
-        discardPile.setOnMouseClicked(event -> {
-            if((event.getButton() == MouseButton.PRIMARY) && (event.getClickCount() == 2) &&
-                    ((event.getTarget() instanceof LabeledText) || (((GridPane) event.getTarget()).getChildren().size() > 0))) {
-
-                System.out.println("asd");
-            }
-        });
-
-
-
-
+//        //Setting up the double click
+//        discardPile.setOnMouseClicked(event -> {
+//            if((event.getButton() == MouseButton.PRIMARY) && (event.getClickCount() == 2) &&
+//                    ((event.getTarget() instanceof LabeledText) || (((GridPane) event.getTarget()).getChildren().size() > 0))) {
+//
+//                System.out.println("asd");
+//            }
+//        });
 
 
 
