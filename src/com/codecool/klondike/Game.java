@@ -1,18 +1,14 @@
 package com.codecool.klondike;
 
+import com.sun.javafx.scene.control.LabeledText;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 
 import java.util.*;
 
@@ -46,6 +42,7 @@ public class Game extends Pane {
         }
     };
 
+
     private EventHandler<MouseEvent> stockReverseCardsHandler = e -> {
         refillStockFromDiscard();
     };
@@ -65,6 +62,7 @@ public class Game extends Pane {
 
         draggedCards.clear();
         draggedCards.add(card);
+        System.out.println(draggedCards.indexOf(card));
 
         card.getDropShadow().setRadius(20);
         card.getDropShadow().setOffsetX(10);
@@ -126,9 +124,14 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        //TODO
+        while (!discardPile.isEmpty()){
+            Card temp = discardPile.getTopCard();
+            temp.flip();
+            temp.moveToPile(stockPile);
+        }
         System.out.println("Stock refilled from discard pile.");
     }
+
 
     public boolean isMoveValid(Card card, Pile destPile) {
         //TODO
@@ -211,6 +214,27 @@ public class Game extends Pane {
         discardPile.setLayoutX(285);
         discardPile.setLayoutY(20);
         getChildren().add(discardPile);
+
+
+
+
+
+
+
+        //Setting up the double click
+        discardPile.setOnMouseClicked(event -> {
+            if((event.getButton() == MouseButton.PRIMARY) && (event.getClickCount() == 2) &&
+                    ((event.getTarget() instanceof LabeledText) || (((GridPane) event.getTarget()).getChildren().size() > 0))) {
+
+                System.out.println("asd");
+            }
+        });
+
+
+
+
+
+
 
         for (int i = 0; i < 4; i++) {
             Pile foundationPile = new Pile(Pile.PileType.FOUNDATION, "Foundation " + i, FOUNDATION_GAP);
