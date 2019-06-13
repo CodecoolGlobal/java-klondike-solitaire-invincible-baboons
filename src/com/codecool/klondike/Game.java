@@ -64,6 +64,7 @@ public class Game extends Pane {
 
         draggedCards.clear();
         draggedCards.add(card);
+        System.out.println(draggedCards.indexOf(card));
 
         card.getDropShadow().setRadius(20);
         card.getDropShadow().setOffsetX(10);
