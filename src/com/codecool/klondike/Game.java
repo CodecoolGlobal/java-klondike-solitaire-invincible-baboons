@@ -36,9 +36,9 @@ public class Game extends Pane {
 
     Button restartButton = new Button("restart");
 
-    private static double STOCK_GAP = 1;
-    private static double FOUNDATION_GAP = 0;
-    private static double TABLEAU_GAP = 30;
+    private static final double STOCK_GAP = 1;
+    private static final double FOUNDATION_GAP = 0;
+    private static final double TABLEAU_GAP = 30;
 
 
 
@@ -93,6 +93,16 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards = null;
         }
+    };
+
+
+    //creating and positioning the restart button
+    private EventHandler<MouseEvent> restartGame = e -> {
+        getChildren().clear();
+        tableauPiles.clear();
+        deck = Card.createNewDeck();
+        initPiles();
+        dealCards();
     };
 
     public boolean isGameWon() {
@@ -166,17 +176,11 @@ public class Game extends Pane {
         stockPile.setOnMouseClicked(stockReverseCardsHandler);
         getChildren().add(stockPile);
 
-        //creating and positioning the restart button
         restartButton.setLayoutX(20);
         restartButton.setLayoutY(20);
-        restartButton.setOnAction((event) -> {
-            getChildren().clear();
-            deck = Card.createNewDeck();
-            initPiles();
-            dealCards();
-
-        });
         getChildren().add(restartButton);
+        restartButton.setOnMouseClicked(restartGame);
+
 
 
         discardPile = new Pile(Pile.PileType.DISCARD, "Discard", STOCK_GAP);
@@ -243,10 +247,5 @@ public class Game extends Pane {
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 
-    /**
-     *
-     */
-    public void restartGame() {
 
-    }
 }
