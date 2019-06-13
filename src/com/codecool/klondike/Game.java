@@ -91,7 +91,10 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        if(foundationPiles.contains())
+        if(stockPile.isEmpty() ||
+            discardPile.isEmpty() ||
+            tableauPiles.isEmpty()){
+            return true; }
         return false;
     }
 
