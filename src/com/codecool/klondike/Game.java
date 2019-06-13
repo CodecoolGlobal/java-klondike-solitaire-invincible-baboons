@@ -79,11 +79,13 @@ public class Game extends Pane {
         Pile pileFoundation = getValidIntersectingPile(card, foundationPiles);
         //TODO
         if (pile != null) {
-            if (isMoveValid(card, pile))
-                handleValidMove(card, pile);
+            isMoveValid(card, pile);
+            handleValidMove(card, pile);
+            autoFlip(tableauPiles);
         } else if (pileFoundation != null) {
-            if (isMoveValid(card, pileFoundation))
-                handleValidMove(card, pileFoundation);
+            isMoveValid(card, pileFoundation);
+            handleValidMove(card, pileFoundation);
+            autoFlip(tableauPiles);
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
@@ -139,6 +141,7 @@ public class Game extends Pane {
         }
         return false;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -207,19 +210,20 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        for(int i = 0; i < tableauPiles.size(); i++){
+        for (int i = 0; i < tableauPiles.size(); i++) {
             Pile pile = tableauPiles.get(i);
-            if(i>0){
-                for(int j = 0; j < i+1; j++ ){
+            if (i > 0) {
+                for (int j = 0; j < i + 1; j++) {
                     Card cardBeingPlaced = deckIterator.next();
                     pile.addCard(cardBeingPlaced);
                     addMouseEventHandlers(cardBeingPlaced);
                     cardBeingPlaced.setContainingPile(pile);
-                    if(j == i){
+                    if (j == i) {
                         cardBeingPlaced.flip();
-                    }getChildren().add(cardBeingPlaced);
+                    }
+                    getChildren().add(cardBeingPlaced);
                 }
-            }else{
+            } else {
                 Card cardBeingPlaced = deckIterator.next();
                 pile.addCard(cardBeingPlaced);
                 addMouseEventHandlers(cardBeingPlaced);
@@ -240,6 +244,15 @@ public class Game extends Pane {
         setBackground(new Background(new BackgroundImage(tableBackground,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
+
+    private void autoFlip(List<Pile> piles) {
+        for (Pile pile : piles) {
+            Card topCard = pile.getTopCard();
+            if (topCard != null && topCard.isFaceDown()) {
+                topCard.flip();
+            }
+        }
     }
 
     /**
