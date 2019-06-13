@@ -8,6 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -39,9 +40,20 @@ public class Pile extends Pane {
         return cards;
     }
 
+    /** counts the cards on the pile
+     * @return the number of cards on the pile */
     public int numOfCards() {
-        //TODO
-        return 1;
+        if (cards.isEmpty()){
+        return 0;
+        }else{
+            int counter = 0;
+            Iterator it = cards.iterator();
+            while (it.hasNext()){
+                it.next();
+                counter++;
+            }
+            return counter;
+        }
     }
 
     public boolean isEmpty() {
@@ -49,7 +61,7 @@ public class Pile extends Pane {
     }
 
     public void clear() {
-        //TODO
+        cards.clear();
     }
 
     public void addCard(Card card) {
