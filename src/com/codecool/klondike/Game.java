@@ -86,10 +86,12 @@ public class Game extends Pane {
             isMoveValid(card, pile);
             handleValidMove(card, pile);
             autoFlip(tableauPiles);
+            isGameWon();
         } else if (pileFoundation != null) {
             isMoveValid(card, pileFoundation);
             handleValidMove(card, pileFoundation);
             autoFlip(tableauPiles);
+            isGameWon();
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
@@ -109,10 +111,12 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        if(stockPile.isEmpty() ||
-            discardPile.isEmpty() ||
-            tableauPiles.isEmpty()){
-            return true; }
+        if (stockPile.isEmpty() ||
+                discardPile.isEmpty() ||
+                tableauPiles.isEmpty()) {
+            System.out.println("Won");
+            return true;
+        }
         return false;
     }
 
@@ -212,7 +216,6 @@ public class Game extends Pane {
         restartButton.setLayoutY(20);
         getChildren().add(restartButton);
         restartButton.setOnMouseClicked(restartGame);
-
 
 
         discardPile = new Pile(Pile.PileType.DISCARD, "Discard", STOCK_GAP);
