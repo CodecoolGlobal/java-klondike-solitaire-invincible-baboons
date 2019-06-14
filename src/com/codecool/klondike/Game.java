@@ -126,8 +126,8 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        if (stockPile.isEmpty() ||
-                discardPile.isEmpty() ||
+        if (stockPile.isEmpty() &&
+                discardPile.isEmpty() &&
                 tableauPiles.isEmpty()) {
             System.out.println("Won");
             return true;
