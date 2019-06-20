@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$//klondike.iml" filepath="$PROJECT_DIR$//klondike.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/java-klondike-solitaire-invincible-baboons.iml" filepath="$PROJECT_DIR$/.idea/java-klondike-solitaire-invincible-baboons.iml" />
     </modules>
   </component>
 </project>

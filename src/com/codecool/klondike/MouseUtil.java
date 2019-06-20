@@ -39,22 +39,34 @@ public class MouseUtil {
         double targetY;
 
         if (destPile.isEmpty()) {
-            targetX = destPile.getLayoutX();
-            targetY = destPile.getLayoutY();
+            if (destPile.getPileType() == Pile.PileType.TABLEAU) {
+                targetX = destPile.getLayoutX();
+                targetY = destPile.getLayoutY();
+                destCardGap = 0;
+            } else {
+                targetX = destPile.getLayoutX();
+                targetY = destPile.getLayoutY();
+            }
         } else {
-            targetX = destPile.getTopCard().getLayoutX();
-            targetY = destPile.getTopCard().getLayoutY();
+            if (destPile.getPileType() == Pile.PileType.TABLEAU) {
+                targetX = destPile.getTopCard().getLayoutX();
+                targetY = destPile.getTopCard().getLayoutY();
+                destCardGap = 30;
+            } else {
+                targetX = destPile.getTopCard().getLayoutX();
+                targetY = destPile.getTopCard().getLayoutY();
+            }
         }
 
         for (int i = 0; i < cardsToSlide.size(); i++) {
             Card currentCard = cardsToSlide.get(i);
             double sourceX = currentCard.getLayoutX() + currentCard.getTranslateX();
             double sourceY = currentCard.getLayoutY() + currentCard.getTranslateY();
+            currentCard.moveToPile(destPile);
 
             animateCardMovement(currentCard, sourceX, sourceY, targetX,
                     targetY + ((destPile.isEmpty() ? i : i + 1) * destCardGap), Duration.millis(150),
                     e -> {
-                        currentCard.moveToPile(destPile);
                         currentCard.getDropShadow().setRadius(2);
                         currentCard.getDropShadow().setOffsetX(0);
                         currentCard.getDropShadow().setOffsetY(0);
